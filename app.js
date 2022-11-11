@@ -6,7 +6,7 @@ import userSchema from './schemas/userschema.js'
 import venderSchema from './schemas/venderschema.js'
 
 const app = express()
-const port = process.env.PORT || '3002'
+const port = process.env.PORT || '3001'
 // const DB_URL="mongodb+srv://moeedather:<>@cluster0.nhiasfk.mongodb.net/?retryWrites=true&w=majority"
 
 
