@@ -6,15 +6,14 @@ import userSchema from './schemas/userschema.js'
 import venderSchema from './schemas/venderschema.js'
 
 const app = express()
-const port = process.env.PORT || '3001'
-// const DB_URL="mongodb+srv://moeed:ather@cluster0.c01xmp1.mongodb.net/uvm?retryWrites=true&w=majority"
+const port = process.env.PORT || '3002'
+// const DB_URL="mongodb+srv://moeedather:<>@cluster0.nhiasfk.mongodb.net/?retryWrites=true&w=majority"
 
-const DB_URL = "mongodb://localhost:27017"
 
 //DB Connection
 try {
-    var conn1 = mongoose.createConnection('mongodb://localhost:27017/UserDatabase');
-    var conn2 = mongoose.createConnection('mongodb://localhost:27017/VenderDatabase');
+    var conn1 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/UserDatabase?retryWrites=true&w=majority');
+    var conn2 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/VenderDatabase?retryWrites=true&w=majority');
 
     console.log("Connection established with UserDatabase and VenderDatabase")
 
