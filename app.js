@@ -17,12 +17,13 @@ const DB3_URL="mongodb://localhost:27017/Products"
 
 //DB Connection
 try {
-    // var conn1 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/UserDatabase?retryWrites=true&w=majority');
-    // var conn2 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/VenderDatabase?retryWrites=true&w=majority');
+    var conn1 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/UserDatabase?retryWrites=true&w=majority');
+    var conn2 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/VenderDatabase?retryWrites=true&w=majority');
+    var conn3 = mongoose.createConnection('mongodb+srv://moeedather:tyson@cluster0.nhiasfk.mongodb.net/Products?retryWrites=true&w=majority')
 
-    var conn1 = mongoose.createConnection(DB1_URL)
-    var conn2 = mongoose.createConnection(DB2_URL)
-    var conn3 = mongoose.createConnection(DB3_URL)
+    // var conn1 = mongoose.createConnection(DB1_URL)
+    // var conn2 = mongoose.createConnection(DB2_URL)
+    // var conn3 = mongoose.createConnection(DB3_URL)
     
     console.log("Connection established with UserDatabase, VenderDatabase and Products")
 
