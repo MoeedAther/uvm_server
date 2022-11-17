@@ -8,7 +8,8 @@ uemail:{type:String, required: true, trim:true},
 ucountrycode:{type:String, required: true, trim:true},
 uphonenumber:{type:String, required: true, trim:true},
 upassword:{type:String, required: true, trim:true},
-ubarcode: {type:String, required: true, trim:true}
+ubarcode: {type:String, required: true, trim:true},
+ubalance: {type:String, required: true, trim:true, default:"0"}
 })
 
 export default userSchema

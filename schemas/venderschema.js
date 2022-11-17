@@ -6,8 +6,8 @@ vfirstname:{type:String, required: true, trim:true}, // trim basically removes e
 vlastname:{type:String, required: true, trim:true},
 vemail:{type:String, required: true, trim:true},
 vphonenumber:{type:String, required: true, trim:true},
-vpassword:{type:String, required: true, trim:true}
+vpassword:{type:String, required: true, trim:true},
+vbalance:{type:String, required: true, trim:true, default:"0"}
 })
-
 
 export default venderSchema

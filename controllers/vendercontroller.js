@@ -4,7 +4,7 @@ class venderController{
     static createVender=async(req,res)=>
     {
         try {
-            const {firstname,lastname, phonenumber, email, password}= req.body // object destructuring
+            const {firstname,lastname, countrycode, email, phonenumber, password}= req.body // object destructuring
             const doc = new venderModel({
                 vfirstname:firstname,
                 vlastname:lastname,
@@ -25,10 +25,17 @@ class venderController{
             const {email, password}=req.body
             console.log(req.body)
             const result=await venderModel.findOne({vemail:email})
-            console.log(result)
+
+            const user_info={
+                rfullname:result.vfirstname+" "+result.vlastname,
+                rphonenumber:result.vphonenumber,
+                remail:result.vemail,
+                raccountbalance:result.vbalance
+            }
+
             if(result.vemail==email && result.vpassword==password)
             {
-                res.send({auth:"auth success"})
+                res.send({auth:"auth success", userinfo:user_info})
             }
             else{
                 res.send({auth:"auth failed"})
@@ -36,6 +43,7 @@ class venderController{
         } catch (error) {
             console.log(error)
         }
+
 
     }
 }

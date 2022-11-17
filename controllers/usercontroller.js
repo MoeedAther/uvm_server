@@ -88,7 +88,8 @@ class userController{
                 ucountrycode:countrycode,
                 uphonenumber:phonenumber,
                 upassword:password,
-                ubarcode: userbarcode
+                ubarcode: userbarcode,
+                ubalance:"2000"
             })
             const result = await doc.save()
             res.status(201).send(result) //status(201) chnages states module from 200 to 201
@@ -105,9 +106,20 @@ class userController{
             console.log(result)
             if(result.uemail==email && result.upassword==password)
             {
+                //Response Prifile User Information VAR
+                const user_info={
+                    rfullname:result.ufirstname+" "+result.ulastname,
+                    rphonenumber:result.uphonenumber,
+                    remail:result.uemail,
+                    raccountbalance:result.ubalance
+                }
+
+                // Response User Barcode VAR
                 const barcode1=result.ubarcode.substring(0,11)
                 const barcode2=result.ubarcode.substring(11,22)
-                res.send({auth:"auth success", firstbarcode:barcode1, secondbarcode:barcode2})
+
+                //Auth Response
+                res.send({auth:"auth success", firstbarcode:barcode1, secondbarcode:barcode2, userinfo:user_info})
             }
             else{
                 res.send({auth:"auth failed"})
