@@ -3,6 +3,9 @@ import userController from '../controllers/usercontroller.js';
 import venderController from '../controllers/vendercontroller.js'
 import productsController from '../controllers/productscontroller.js';
 import transactionController from '../controllers/transactioncontroller.js';
+import depositController from '../controllers/depositcontroller.js';
+import userInfoController from '../controllers/userinfocontroller.js';
+import venderInfoController from '../controllers/venderinfocontroller.js';
 
 const router=express.Router();
 
@@ -29,6 +32,21 @@ router.post('/producttransaction', productsController.getProductTransactionInfo)
 
 //Final Transaction
 router.post('/transaction', transactionController.Transaction)
+
+//User Account Deposit
+router.post('/deposit',depositController.Deposit)
+
+//User Data
+router.post('/userinfo',userInfoController.userInfo)
+
+//Vender Data
+router.post('/venderinfo',venderInfoController.venderInfo)
+
+//User Transaction Data
+router.get('/usertransactions', transactionController.getUserTransactionInfo)
+
+//Vender Transaction Data
+router.get('/vendertransactions', transactionController.getVenderTransactionInfo)
 
 
 export default router
