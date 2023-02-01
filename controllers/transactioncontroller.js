@@ -1,4 +1,4 @@
-import { userTransactionModel, venderTransactionModel, userModel, venderModel } from "../app.js"
+import { userTransactionModel, userModel } from "../app.js"
 
 class transactionController {
     static Transaction = async (req, res) => {
@@ -8,7 +8,7 @@ class transactionController {
         const time = new Date(new Date().getTime() + 4 * 60 * 60 * 1000).toLocaleTimeString();
 
         try {
-            const { transaction, userbarcode, total, vender_email } = req.body
+            const { transaction, userbarcode, total } = req.body
             const result1 = await userModel.findOne({ ubarcode: userbarcode })
             if (result1.ubarcode === userbarcode) {
                 transaction.map(async (objs) => {
@@ -21,34 +21,25 @@ class transactionController {
                         uunitprice: objs.products.pprice,
                         uunitspurchased: "Null",
                         upurchasetime: date + " " + time,
+                        upurchaseday: date,
                         utotalamount: total
                     })
 
-                    const doc2 = new venderTransactionModel({
-                        vproductbarcode: objs.products.pbarcode,
-                        vproductname: objs.products.pname,
-                        vproductcategory: objs.products.pcategory,
-                        vunitprice: objs.products.pprice,
-                        vunitspurchased: "Null",
-                        vpurchasetime: date + " " + time,
-                        vtotalamount: total
-                    })
-
                      await doc1.save()
-                     await doc2.save()
+                    //  await doc2.save()
 
-                    const result2 = await venderModel.findOne({ vemail: vender_email })
+                    // const result2 = await venderModel.findOne({ vemail: vender_email })
 
                     const ubalanceInt = parseInt(result1.ubalance);
-                    const vbalanceInt = parseInt(result2.vbalance);
+                    // const vbalanceInt = parseInt(result2.vbalance);
 
                     const inttotalamount = parseInt(total);
 
                     const ubalanceupdate = ubalanceInt - inttotalamount
-                    const vbalanceupdate = vbalanceInt + inttotalamount
+                    // const vbalanceupdate = vbalanceInt + inttotalamount
 
                     await userModel.findByIdAndUpdate(result1._id, { ubalance: ubalanceupdate }, { returnDocument: 'after' })
-                    await venderModel.findByIdAndUpdate(result2._id, { vbalance: vbalanceupdate }, { returnDocument: 'after' })
+                    // await venderModel.findByIdAndUpdate(result2._id, { vbalance: vbalanceupdate }, { returnDocument: 'after' })
 
                     res.send({response:"Purchase Successfull"})
                 })

@@ -5,11 +5,9 @@ class depositController {
         try {
             const {email,deposit} = req.body // object destructuring
 
-            console.log(email,deposit)
-
             const result1 = await userModel.findOne({ uemail: email })
 
-            const ubalanceint = parseInt(result1.ubalance);
+            const ubalanceint = parseInt(result1.ubalance); 
 
             const udepositint = parseInt(deposit);
 

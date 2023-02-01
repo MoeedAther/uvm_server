@@ -12,6 +12,5 @@ class userInfoController{
             console.log(error)
         }
     }
-
 }
 export default userInfoController

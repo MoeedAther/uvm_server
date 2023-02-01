@@ -1,11 +1,11 @@
 import express from 'express'
 import userController from '../controllers/usercontroller.js';
-import venderController from '../controllers/vendercontroller.js'
+// import venderController from '../controllers/vendercontroller.js'
 import productsController from '../controllers/productscontroller.js';
 import transactionController from '../controllers/transactioncontroller.js';
 import depositController from '../controllers/depositcontroller.js';
 import userInfoController from '../controllers/userinfocontroller.js';
-import venderInfoController from '../controllers/venderinfocontroller.js';
+// import venderInfoController from '../controllers/venderinfocontroller.js';
 
 const router=express.Router();
 
@@ -16,10 +16,10 @@ router.post('/register/user', userController.createUser)
 router.post('/auth/user', userController.authUser)
 
 //Vender Registeration
-router.post('/register/vender', venderController.createVender)
+// router.post('/register/vender', venderController.createVender)
 
 //Vender Login
-router.post('/auth/vender', venderController.authVender)
+// router.post('/auth/vender', venderController.authVender)
 
 //Products Addition
 router.post('/addproducts', productsController.addProducts)
@@ -29,6 +29,12 @@ router.get('/products', productsController.getProductInfo)
 
 //Initial Transaction Product Information
 router.post('/producttransaction', productsController.getProductTransactionInfo)
+
+//Add Product Category 
+router.post('/addproductcategory', productsController.addProductCategory)
+
+// Delete Product Category
+router.post('/removeproductcategory',productsController.removeProductCategory)
 
 //Final Transaction
 router.post('/transaction', transactionController.Transaction)
@@ -40,13 +46,12 @@ router.post('/deposit',depositController.Deposit)
 router.post('/userinfo',userInfoController.userInfo)
 
 //Vender Data
-router.post('/venderinfo',venderInfoController.venderInfo)
+// router.post('/venderinfo',venderInfoController.venderInfo)
 
 //User Transaction Data
 router.get('/usertransactions', transactionController.getUserTransactionInfo)
 
 //Vender Transaction Data
-router.get('/vendertransactions', transactionController.getVenderTransactionInfo)
-
+// router.get('/vendertransactions', transactionController.getVenderTransactionInfo)
 
 export default router

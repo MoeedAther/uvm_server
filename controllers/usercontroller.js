@@ -29,7 +29,7 @@ class userController{
             const min3=10
             const range3=max3-min3+1
             const decimal_num3=Math.random() * range3
-            const encryption_index=Math.floor(decimal_num3) + min3
+            const encryption_index=Math.floor(decimal_num3) + min3 
 
             //Request Body
             console.log(req.body)

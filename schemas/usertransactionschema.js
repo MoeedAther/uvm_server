@@ -8,6 +8,7 @@ uproductcategory:{type:String, required: true, trim:true},
 uunitprice:{type:String, required: true, trim:true},
 uunitspurchased:{type:String, required: true, trim:true},
 upurchasetime:{type:String, required: true, trim:true},
+upurchaseday:{type:String, required: true, trim:true},
 utotalamount:{type:String, required: true, trim:true},
 
 })

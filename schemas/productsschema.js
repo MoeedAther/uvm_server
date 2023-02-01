@@ -10,4 +10,8 @@ pquantity:{type:String, required: true, trim:true},
 pdescription:{type:String, required: true, trim:true},
 })
 
-export default productsSchema
+const productsCategorySchema = new mongoose.Schema({
+    pcategoryname:{type:String, required: true, trim:true},
+    })
+
+export {productsSchema, productsCategorySchema}
