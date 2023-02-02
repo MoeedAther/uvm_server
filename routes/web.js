@@ -15,12 +15,6 @@ router.post('/register/user', userController.createUser)
 //User Login
 router.post('/auth/user', userController.authUser)
 
-//Vender Registeration
-// router.post('/register/vender', venderController.createVender)
-
-//Vender Login
-// router.post('/auth/vender', venderController.authVender)
-
 //Products Addition
 router.post('/addproducts', productsController.addProducts)
 
