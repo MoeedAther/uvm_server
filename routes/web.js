@@ -39,13 +39,11 @@ router.post('/deposit',depositController.Deposit)
 //User Data
 router.post('/userinfo',userInfoController.userInfo)
 
-//Vender Data
-// router.post('/venderinfo',venderInfoController.venderInfo)
-
 //User Transaction Data
 router.get('/usertransactions', transactionController.getUserTransactionInfo)
 
-//Vender Transaction Data
-// router.get('/vendertransactions', transactionController.getVenderTransactionInfo)
+//Check Token
+router.post('/token', userController.checkToken)
+
 
 export default router

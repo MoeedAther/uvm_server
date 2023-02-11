@@ -1,5 +1,7 @@
 import { userModel } from "../app.js"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+
 
 class userController {
     static createUser = async (req, res) => {
@@ -33,17 +35,7 @@ class userController {
 
             //Request Body
             console.log(req.body)
-            const { firstname, lastname, countrycode, email, phonenumber, password } = req.body// object destructuring
-
-            //User Password encryption
-            const saltRounds = 10;
-            const enc=bcrypt.hash(password, saltRounds, (err, hash) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }else{
-                    return(hash)
-                }
-            });
+            let { firstname, lastname, countrycode, email, phonenumber, password } = req.body// object destructuring
 
             //Generating User ID from phone number
             const replacement = "0"
@@ -78,22 +70,47 @@ class userController {
 
             // Generating Barcode
             const userbarcode1 = identifier1 + countrycode + companycode + rotation_code + encryption_index
-            const userbarcode2 = identifier2 + userbarcodeID
-            const userbarcode = userbarcode1 + userbarcode2
 
 
-            const doc = new userModel({
-                ufirstname: firstname,
-                ulastname: lastname,
-                uemail: email,
-                ucountrycode: countrycode,
-                uphonenumber: phonenumber,
-                upassword: password,
-                ubarcode: userbarcode,
-                ubalance: "2000"
+            //User Password encryption
+            const securePassword = async (pass) => {
+
+                const passwordHash = await bcrypt.hash(pass, 10)
+                return passwordHash
+            }
+
+            const secureBarcode = async (bar) => {
+
+                const barcodeHash = await bcrypt.hash(bar, 10)
+                return barcodeHash
+            }
+
+
+            securePassword(password).then(async (phash) => {
+
+                secureBarcode(userbarcodeID).then(async (bhash) => {
+
+                    //Cobining user barcode
+                    const userbarcode2 = identifier2 + bhash
+                    const userbarcode = userbarcode1 + userbarcode2
+
+                    const doc = new userModel({
+                        ufirstname: firstname,
+                        ulastname: lastname,
+                        uemail: email,
+                        ucountrycode: countrycode,
+                        uphonenumber: phonenumber,
+                        upassword: phash,
+                        ubarcode: userbarcode,
+                        ubalance: "0"
+                    })
+                    const result = await doc.save()
+                    res.status(201).send(result) //status(201) chnages states module from 200 to 201
+
+                })
+
             })
-            const result = await doc.save()
-            res.status(201).send(result) //status(201) chnages states module from 200 to 201
+
         } catch (error) {
             console.log(error)
         }
@@ -105,26 +122,67 @@ class userController {
             console.log(req.body)
             const result = await userModel.findOne({ uemail: email })
             console.log(result)
-            if (result.uemail == email && result.upassword == password) {
-                //Response Prifile User Information VAR
-                const user_info = {
-                    rfullname: result.ufirstname + " " + result.ulastname,
-                    rphonenumber: result.uphonenumber,
-                    remail: result.uemail,
-                    raccountbalance: result.ubalance
+
+            //Generating JWT Tocken
+            const payload = {
+                firstname: result.ufirstname,
+                lastname: result.ulastname,
+                email: result.uemail
+            }
+            const secret = "y88hhhwudhuddikwjj9dwu993u7837784r3hdjwwddnjojkxmxklqiqhiu7374r63748990;.;pri4kk3p2;l;ke2oite3[lp3221;p9u2309"
+            const token = jwt.sign(payload, secret)
+            console.log(token)
+
+            //Password Compare
+            bcrypt.compare(password, result.upassword, function (err, isMatch) {
+
+                if (result.uemail === email && isMatch) {
+                    //Response Prifile User Information VAR
+                    const user_info = {
+                        rfullname: result.ufirstname + " " + result.ulastname,
+                        rphonenumber: result.uphonenumber,
+                        remail: result.uemail,
+                        raccountbalance: result.ubalance,
+                        rtoken: token
+                    }
+
+                    // Response User Barcode VAR
+                    const barcode1 = result.ubarcode.substring(0, 10)
+                    const barcode2 = result.ubarcode.substring(10, 71)
+
+                    //Auth Response
+                    res.send({ auth: "auth success", firstbarcode: barcode1, secondbarcode: barcode2, userinfo: user_info })
                 }
+                else {
+                    res.send({ auth: "auth failed" })
+                }
+            });
 
-                // Response User Barcode VAR
-                const barcode1 = result.ubarcode.substring(0, 11)
-                const barcode2 = result.ubarcode.substring(11, 22)
-
-                //Auth Response
-                res.send({ auth: "auth success", firstbarcode: barcode1, secondbarcode: barcode2, userinfo: user_info })
-            }
-            else {
-                res.send({ auth: "auth failed" })
-            }
         } catch (error) {
+            console.log(error)
+        }
+    }
+
+    static checkToken = async (req, res) => {
+        try {
+            const { token } = req.body
+            console.log(token)
+            //Verify JWT
+            const secret = "y88hhhwudhuddikwjj9dwu993u7837784r3hdjwwddnjojkxmxklqiqhiu7374r63748990;.;pri4kk3p2;l;ke2oite3[lp3221;p9u2309"
+            const tk = jwt.verify(token, secret)
+            console.log(tk)
+            const result = await userModel.findOne({ uemail:tk.email })
+            if(tk.email==result.uemail)
+            {
+                console.log("successful")
+                res.send({message:"Verification Successful"})
+                
+            }else{
+                console.log("Verification Successful")
+                res.send({message:"Verify Unsuccessful"})
+            }
+        }
+        catch (error) {
             console.log(error)
         }
     }
