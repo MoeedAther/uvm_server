@@ -1,3 +1,4 @@
+import { response } from "express";
 import { userTransactionModel, userModel } from "../app.js"
 
 class transactionController {
@@ -5,45 +6,63 @@ class transactionController {
 
         const today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var datemonth = today.getFullYear() + '-' + (today.getMonth() + 1)
+        var year = today.getFullYear()
+        var month = (today.getMonth() + 1)
+
         const time = new Date(new Date().getTime() + 4 * 60 * 60 * 1000).toLocaleTimeString();
 
         try {
-            const { transaction, userbarcode, total } = req.body
+            const {email, transaction, userbarcode, total } = req.body
             const result1 = await userModel.findOne({ ubarcode: userbarcode })
+
+            //Check User Barcode
             if (result1.ubarcode === userbarcode) {
-                transaction.map(async (objs) => {
-                    console.log(objs)
 
-                    const doc1 = new userTransactionModel({
-                        uproductbarcode: objs.products.pbarcode,
-                        uproductname: objs.products.pname,
-                        uproductcategory: objs.products.pcategory,
-                        uunitprice: objs.products.pprice,
-                        uunitspurchased: "Null",
-                        upurchasetime: date + " " + time,
-                        upurchaseday: date,
-                        utotalamount: total
-                    })
+                //Check Balance            
+                if(result1.ubalance==0){
+                    res.send({response:"User Account is Empty"})
+                }else{
+                    transaction.map(async (objs) => {
 
-                     await doc1.save()
-                    //  await doc2.save()
+                        const doc1 = new userTransactionModel({
+                            useremail:email,
+                            uproductbarcode: objs.apiData.products.pbarcode,
+                            uproductname: objs.apiData.products.pname,
+                            uproductcategory: objs.apiData.products.pcategory,
+                            uunitprice: objs.apiData.products.pprice,
+                            uunitspurchased: objs.quantity,
+                            upurchasetime: date + " " + time,
+                            umonthandyear: datemonth,
+                            uyear:year,
+                            umonth:month,
+                            upurchaseday: date,
+                            utotalamount: objs.multiply
+                        })
+    
+                         await doc1.save()
+                        // //  await doc2.save()
+    
+                        // // const result2 = await venderModel.findOne({ vemail: vender_email })
+    
+                        // const ubalanceInt = parseInt(result1.ubalance);
+                        // // const vbalanceInt = parseInt(result2.vbalance);
+    
+                        // const inttotalamount = parseInt(total);
+    
+                        // const ubalanceupdate = ubalanceInt - inttotalamount
+                        // // const vbalanceupdate = vbalanceInt + inttotalamount
+    
+                        // await venderModel.findByIdAndUpdate(result2._id, { vbalance: vbalanceupdate }, { returnDocument: 'after' })
 
-                    // const result2 = await venderModel.findOne({ vemail: vender_email })
 
-                    const ubalanceInt = parseInt(result1.ubalance);
-                    // const vbalanceInt = parseInt(result2.vbalance);
-
-                    const inttotalamount = parseInt(total);
-
-                    const ubalanceupdate = ubalanceInt - inttotalamount
-                    // const vbalanceupdate = vbalanceInt + inttotalamount
-
-                    await userModel.findByIdAndUpdate(result1._id, { ubalance: ubalanceupdate }, { returnDocument: 'after' })
-                    // await venderModel.findByIdAndUpdate(result2._id, { vbalance: vbalanceupdate }, { returnDocument: 'after' })
-
-                    res.send({response:"Purchase Successfull"})
                 })
-
+                const ubalanceInt = parseInt(result1.ubalance);    
+                const inttotalamount = parseInt(total);
+                const ubalanceupdate = ubalanceInt - inttotalamount;
+                await userModel.findByIdAndUpdate(result1._id, { ubalance: ubalanceupdate }, { returnDocument: 'after' });
+                res.send({response:"Purchase Successfull"})
+            }
 
             } else {
                 res.send({response:"User Doesnot Exist"})

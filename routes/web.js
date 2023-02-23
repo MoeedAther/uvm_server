@@ -1,11 +1,9 @@
 import express from 'express'
 import userController from '../controllers/usercontroller.js';
-// import venderController from '../controllers/vendercontroller.js'
 import productsController from '../controllers/productscontroller.js';
 import transactionController from '../controllers/transactioncontroller.js';
 import depositController from '../controllers/depositcontroller.js';
 import userInfoController from '../controllers/userinfocontroller.js';
-// import venderInfoController from '../controllers/venderinfocontroller.js';
 
 const router=express.Router();
 
@@ -44,6 +42,5 @@ router.get('/usertransactions', transactionController.getUserTransactionInfo)
 
 //Check Token
 router.post('/token', userController.checkToken)
-
 
 export default router

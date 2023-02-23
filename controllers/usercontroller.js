@@ -70,7 +70,9 @@ class userController {
 
             // Generating Barcode
             const userbarcode1 = identifier1 + countrycode + companycode + rotation_code + encryption_index
-
+            //Cobining user barcode
+            const userbarcode2 = identifier2 + userbarcodeID
+            const userbarcode = userbarcode1 + userbarcode2
 
             //User Password encryption
             const securePassword = async (pass) => {
@@ -79,37 +81,25 @@ class userController {
                 return passwordHash
             }
 
-            const secureBarcode = async (bar) => {
-
-                const barcodeHash = await bcrypt.hash(bar, 10)
-                return barcodeHash
-            }
-
 
             securePassword(password).then(async (phash) => {
 
-                secureBarcode(userbarcodeID).then(async (bhash) => {
-
-                    //Cobining user barcode
-                    const userbarcode2 = identifier2 + bhash
-                    const userbarcode = userbarcode1 + userbarcode2
-
-                    const doc = new userModel({
-                        ufirstname: firstname,
-                        ulastname: lastname,
-                        uemail: email,
-                        ucountrycode: countrycode,
-                        uphonenumber: phonenumber,
-                        upassword: phash,
-                        ubarcode: userbarcode,
-                        ubalance: "0"
-                    })
-                    const result = await doc.save()
-                    res.status(201).send(result) //status(201) chnages states module from 200 to 201
-
+                const doc = new userModel({
+                    ufirstname: firstname,
+                    ulastname: lastname,
+                    uemail: email,
+                    ucountrycode: countrycode,
+                    uphonenumber: phonenumber,
+                    upassword: phash,
+                    ubarcode: userbarcode,
+                    ubalance: "0"
                 })
+                const result = await doc.save()
+                res.status(201).send(result) //status(201) chnages states module from 200 to 201
 
             })
+
+
 
         } catch (error) {
             console.log(error)
@@ -147,8 +137,8 @@ class userController {
                     }
 
                     // Response User Barcode VAR
-                    const barcode1 = result.ubarcode.substring(0, 10)
-                    const barcode2 = result.ubarcode.substring(10, 71)
+                    const barcode1 = result.ubarcode.substring(0, 11)
+                    const barcode2 = result.ubarcode.substring(11, 22)
 
                     //Auth Response
                     res.send({ auth: "auth success", firstbarcode: barcode1, secondbarcode: barcode2, userinfo: user_info })
@@ -171,15 +161,14 @@ class userController {
             const secret = "y88hhhwudhuddikwjj9dwu993u7837784r3hdjwwddnjojkxmxklqiqhiu7374r63748990;.;pri4kk3p2;l;ke2oite3[lp3221;p9u2309"
             const tk = jwt.verify(token, secret)
             console.log(tk)
-            const result = await userModel.findOne({ uemail:tk.email })
-            if(tk.email==result.uemail)
-            {
+            const result = await userModel.findOne({ uemail: tk.email })
+            if (tk.email == result.uemail) {
                 console.log("successful")
-                res.send({message:"Verification Successful"})
-                
-            }else{
+                res.send({ message: "Verification Successful" })
+
+            } else {
                 console.log("Verification Successful")
-                res.send({message:"Verify Unsuccessful"})
+                res.send({ message: "Verify Unsuccessful" })
             }
         }
         catch (error) {

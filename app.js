@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import userSchema from './schemas/userschema.js'
 import {productsSchema, productsCategorySchema} from './schemas/productsschema.js'
 import usertransactionSchema from './schemas/usertransactionschema.js'
+import  userdepositSchema from './schemas/Deposits.js'
 
 const app = express()
 const port = process.env.PORT || '3001'
@@ -34,6 +35,7 @@ const userModel = conn1.model('user_data', userSchema);
 const userTransactionModel = conn1.model('user_transaction', usertransactionSchema);
 const productsModel = conn3.model('productsinfo', productsSchema);
 const productsCategoryModel = conn3.model('product_category', productsCategorySchema);
+const depositModel=conn1.model('deposits', userdepositSchema)
 
 //JSON
 app.use(express.json())
@@ -48,4 +50,4 @@ app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`)
 })
 
-export { userModel, productsModel , userTransactionModel, productsCategoryModel}
+export { userModel, productsModel , userTransactionModel, productsCategoryModel, depositModel}
