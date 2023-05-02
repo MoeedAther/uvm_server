@@ -2,7 +2,7 @@ import {userModel, depositModel} from "../app.js"
 
 import stripe from 'stripe';
 
-const payment = stripe('sk_test_51MhUtzIJnUpCjJrBzzbmCC1NlfO2MHkkvKTPMTLj4McHQ9DxCPBYXSTu1ZbfOvsCJvHKYCgcA9gp1F4OQHagHTTV00M63i8SAA');
+const payment = stripe('sk_test_51N1Zz3F4RsaS3Gsbt6dZHyScUqzBErzNqVyg3gOkVLIVGJUL7OhrfPpQgjLjc103cxBjQVhZFP5YK8VUNN9eBhJd00650G1mES');
 
 class depositController {
     static Deposit = async (req, res) => {
