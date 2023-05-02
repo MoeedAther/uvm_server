@@ -16,6 +16,8 @@ class transactionController {
             const {email, transaction, userbarcode, total } = req.body
             const result1 = await userModel.findOne({ ubarcode: userbarcode })
 
+            console.log(req.body)
+            
             //Check User Barcode
             if (result1.ubarcode === userbarcode) {
 
