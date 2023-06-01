@@ -49,10 +49,12 @@ class productsController{
 
     static getProductInfo=async(req,res)=>{
         try {
-            const{productbarcode,useremail}=req.body
-            const result=await productsModel.findOne({pbarcode:productbarcode,uemail:useremail})
+            // console.log(res.body)
+            // const{productbarcode,useremail}=req.body
+            // const result=await productsModel.findOne({pbarcode:productbarcode,uemail:useremail})
+            const result=await productsModel.find()
             res.send({products: result})
-            // console.log(result)
+            console.log(result)
         
         } catch (error) {
             console.log(error)

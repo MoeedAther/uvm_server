@@ -17,6 +17,7 @@ router.post('/auth/user', userController.authUser)
 
 // forget password
 router.post('/forget-password', userController.forgetPassword)
+
 // otp check and update password
 router.post('/otp-check', userController.OtpCheck)
 
