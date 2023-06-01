@@ -6,9 +6,14 @@ import userSchema from './schemas/userschema.js'
 import {productsSchema, productsCategorySchema} from './schemas/productsschema.js'
 import usertransactionSchema from './schemas/usertransactionschema.js'
 import  userdepositSchema from './schemas/Deposits.js'
+import Otp from './schemas/Otp.js'
+// import { withdraw } from './controllers/withdrawdeposit.js'
+
+
+
 
 const app = express()
-const port = process.env.PORT || '3001'
+const port = process.env.PORT || '3000'
 // const DB_URL="mongodb+srv://moeedather:<>@cluster0.nhiasfk.mongodb.net/?retryWrites=true&w=majority"
 const DB1_URL="mongodb://localhost:27017/UserDatabase"
 // const DB2_URL="mongodb://localhost:27017/VenderDatabase"
@@ -36,6 +41,12 @@ const userTransactionModel = conn1.model('user_transaction', usertransactionSche
 const productsModel = conn3.model('productsinfo', productsSchema);
 const productsCategoryModel = conn3.model('product_category', productsCategorySchema);
 const depositModel=conn1.model('deposits', userdepositSchema)
+const OtpModel = conn1.model('Otp', Otp)
+
+
+
+
+
 
 //JSON
 app.use(express.json())
@@ -50,4 +61,4 @@ app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`)
 })
 
-export { userModel, productsModel , userTransactionModel, productsCategoryModel, depositModel}
+export { userModel, productsModel , userTransactionModel, productsCategoryModel, depositModel,OtpModel}

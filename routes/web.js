@@ -4,6 +4,8 @@ import productsController from '../controllers/productscontroller.js';
 import transactionController from '../controllers/transactioncontroller.js';
 import depositController from '../controllers/depositcontroller.js';
 import userInfoController from '../controllers/userinfocontroller.js';
+import { withdraw } from '../controllers/withdrawdeposit.js';
+import adminController from "../controllers/adminController.js";
 
 const router=express.Router();
 
@@ -12,6 +14,13 @@ router.post('/register/user', userController.createUser)
 
 //User Login
 router.post('/auth/user', userController.authUser)
+
+// forget password
+router.post('/forget-password', userController.forgetPassword)
+// otp check and update password
+router.post('/otp-check', userController.OtpCheck)
+
+
 
 //Products Addition
 router.post('/addproducts', productsController.addProducts)
@@ -34,6 +43,9 @@ router.post('/transaction', transactionController.Transaction)
 //User Account Deposit
 router.post('/deposit',depositController.Deposit)
 
+
+
+
 //User Data
 router.post('/userinfo',userInfoController.userInfo)
 
@@ -42,5 +54,11 @@ router.get('/usertransactions', transactionController.getUserTransactionInfo)
 
 //Check Token
 router.post('/token', userController.checkToken)
+
+// Withdraw deposit
+router.post('/withdraw', withdraw);
+
+// Registered user info
+router.get("/admininfo", adminController.adminInfo);
 
 export default router

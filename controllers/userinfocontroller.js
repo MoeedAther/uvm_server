@@ -222,8 +222,23 @@ class userInfoController {
             })
 
             const categoriesarr=[biscuits,snacks,softdrinks,juices]
+             // Calculate yearly deposits
+      const yearlyDeposits = yearlydeposits.reduce((acc, deposit) => acc + deposit, 0);
+
+      // Calculate yearly spendings
+      const yearlySpendings = yearlySpending.reduce((acc, spending) => acc + spending, 0);
+
+      // Calculate yearly savings for each month
+      const yearlySavings = yearlySpending.map((spending, index) => {
+        const deposit = yearlydeposits[index];
+        return deposit > 0 ? (deposit - spending) : 0;
+      });
+
+
+
+
             
-            res.send({ balance: result1.ubalance, todayspendings:todayspendings, thismonthspendings:monthlyspendings, totalvproducts: totalproducts, categories:categoriesarr, yearlyspendings:yearlySpending, yearlydeposits:yearlydeposits})
+            res.send({ balance: result1.ubalance, todayspendings:todayspendings, thismonthspendings:monthlyspendings, totalvproducts: totalproducts, categories:categoriesarr, yearlyspendings:yearlySpending, yearlydeposits:yearlydeposits, yearlysavings: yearlySavings})
         } catch (error) {
             console.log(error)
         }

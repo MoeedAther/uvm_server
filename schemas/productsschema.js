@@ -8,6 +8,7 @@ pcategory:{type:String, required: true, trim:true},
 pprice:{type:String, required: true, trim:true},
 pquantity:{type:String, required: true, trim:true},
 pdescription:{type:String, required: true, trim:true},
+uemail: { type: String, required: true }
 })
 
 const productsCategorySchema = new mongoose.Schema({

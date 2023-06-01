@@ -4,7 +4,7 @@ class productsController{
     static addProducts=async(req,res)=>
     {
         try {
-            const {productbarcode, productname, productcategory, unitprice, productquantity, productdescription}= req.body // object destructuring
+            const {productbarcode, productname, productcategory, unitprice, productquantity, productdescription,useremail}= req.body // object destructuring
             const doc = new productsModel({
                 pbarcode: productbarcode,
                 pname: productname,
@@ -12,6 +12,7 @@ class productsController{
                 pprice: unitprice,
                 pquantity: productquantity,
                 pdescription: productdescription,
+                uemail:useremail
             })
             await doc.save()
             res.status(201).send({response:"product added successfully"}) //status(201) changes states module from 200 to 201
@@ -48,9 +49,10 @@ class productsController{
 
     static getProductInfo=async(req,res)=>{
         try {
-            const result=await productsModel.find()
+            const{productbarcode,useremail}=req.body
+            const result=await productsModel.findOne({pbarcode:productbarcode,uemail:useremail})
             res.send({products: result})
-            console.log(result)
+            // console.log(result)
         
         } catch (error) {
             console.log(error)
@@ -66,6 +68,10 @@ class productsController{
         } catch (error) {
             console.log(error)
         }
+
     }
+    
+
+    
 }
 export default productsController
